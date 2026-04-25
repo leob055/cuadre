@@ -12,6 +12,7 @@
             --secondary: #fbbf24;
             --success: #22c55e;
             --danger: #ef4444;
+            --whatsapp: #25d366;
             --text: #f8fafc;
         }
 
@@ -61,8 +62,6 @@
             margin-bottom: 15px;
             border-bottom: 2px solid var(--primary);
             padding-bottom: 5px;
-            display: flex;
-            justify-content: space-between;
         }
 
         .input-group {
@@ -88,11 +87,6 @@
             outline: none;
         }
 
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-        }
-
         .total-box {
             margin-top: 20px;
             padding: 15px;
@@ -100,7 +94,6 @@
             border-radius: 10px;
             text-align: center;
             font-weight: bold;
-            font-size: 1.2rem;
         }
 
         .results-panel {
@@ -123,25 +116,33 @@
 
         .final-val {
             display: block;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             margin-top: 10px;
         }
 
-        .btn-clear {
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        button {
             width: 100%;
-            margin-top: 20px;
             padding: 15px;
-            background: var(--danger);
-            color: white;
             border: none;
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.2s;
+            font-size: 1rem;
+            transition: transform 0.1s;
         }
 
-        .btn-clear:hover { opacity: 0.8; }
+        button:active { transform: scale(0.98); }
+
+        .btn-ws { background: var(--whatsapp); color: white; }
+        .btn-clear { background: var(--danger); color: white; opacity: 0.8; }
     </style>
 </head>
 <body>
@@ -152,44 +153,20 @@
     <div class="grid">
         <div class="column">
             <div class="column-title">Efectivo 💵</div>
-            <div class="input-group">
-                <label>Gabeta</label>
-                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>Monedas</label>
-                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>Fiados</label>
-                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>Premios</label>
-                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="total-box">Total: <span id="totalLeft">0.00</span></div>
+            <div class="input-group"><label>Gabeta</label><input type="number" id="gabeta" class="left-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Monedas</label><input type="number" id="monedas" class="left-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Fiados</label><input type="number" id="fiados" class="left-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Premios</label><input type="number" id="premios" class="left-input" oninput="calcular()"></div>
+            <div class="total-box">Total Izq: <span id="totalLeft">0.00</span></div>
         </div>
 
         <div class="column">
             <div class="column-title">Operaciones 📊</div>
-            <div class="input-group">
-                <label>Lotería</label>
-                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>Parlay</label>
-                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>Leo</label>
-                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="input-group">
-                <label>Pagos</label>
-                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
-            </div>
-            <div class="total-box">Total: <span id="totalRight">0.00</span></div>
+            <div class="input-group"><label>Lotería</label><input type="number" id="loteria" class="right-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Parlay</label><input type="number" id="parlay" class="right-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Leo</label><input type="number" id="leo" class="right-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Pagos</label><input type="number" id="pagos" class="right-input" oninput="calcular()"></div>
+            <div class="total-box">Total Der: <span id="totalRight">0.00</span></div>
         </div>
     </div>
 
@@ -204,7 +181,10 @@
         </div>
     </div>
 
-    <button class="btn-clear" onclick="limpiar()">BORRAR TODO</button>
+    <div class="actions">
+        <button class="btn-ws" onclick="enviarWhatsApp()">ENVIAR POR WHATSAPP ✅</button>
+        <button class="btn-clear" onclick="limpiar()">LIMPIAR TODO</button>
+    </div>
 </div>
 
 <script>
@@ -213,28 +193,53 @@
         let rightInputs = document.querySelectorAll('.right-input');
         
         let sumLeft = 0;
-        leftInputs.forEach(input => {
-            sumLeft += Number(input.value) || 0;
-        });
+        leftInputs.forEach(input => sumLeft += Number(input.value) || 0);
 
         let sumRight = 0;
-        rightInputs.forEach(input => {
-            sumRight += Number(input.value) || 0;
-        });
+        rightInputs.forEach(input => sumRight += Number(input.value) || 0);
 
-        // Actualizar totales individuales
-        document.getElementById('totalLeft').innerText = sumLeft.toLocaleString('en-US', {minimumFractionDigits: 2});
-        document.getElementById('totalRight').innerText = sumRight.toLocaleString('en-US', {minimumFractionDigits: 2});
+        document.getElementById('totalLeft').innerText = sumLeft.toFixed(2);
+        document.getElementById('totalRight').innerText = sumRight.toFixed(2);
+        document.getElementById('grandSum').innerText = (sumLeft + sumRight).toFixed(2);
+        document.getElementById('grandDiff').innerText = (sumLeft - sumRight).toFixed(2);
+    }
 
-        // Suma de ambos totales
-        document.getElementById('grandSum').innerText = (sumLeft + sumRight).toLocaleString('en-US', {minimumFractionDigits: 2});
+    function enviarWhatsApp() {
+        // Obtener valores
+        const v = (id) => document.getElementById(id).value || "0.00";
+        const tl = document.getElementById('totalLeft').innerText;
+        const tr = document.getElementById('totalRight').innerText;
+        const suma = document.getElementById('grandSum').innerText;
+        const resta = document.getElementById('grandDiff').innerText;
+        const fecha = new Date().toLocaleDateString();
 
-        // Resta de ambos totales
-        document.getElementById('grandDiff').innerText = (sumLeft - sumRight).toLocaleString('en-US', {minimumFractionDigits: 2});
+        // Crear mensaje formateado
+        let mensaje = `*CIERRE DE CAJA - ${fecha}*%0A%0A`;
+        mensaje += `*EFECTIVO:*%0A`;
+        mensaje += `- Gabeta: ${v('gabeta')}%0A`;
+        mensaje += `- Monedas: ${v('monedas')}%0A`;
+        mensaje += `- Fiados: ${v('fiados')}%0A`;
+        mensaje += `- Premios: ${v('premios')}%0A`;
+        mensaje += `*TOTAL IZQ: ${tl}*%0A%0A`;
+        
+        mensaje += `*OPERACIONES:*%0A`;
+        mensaje += `- Lotería: ${v('loteria')}%0A`;
+        mensaje += `- Parlay: ${v('parlay')}%0A`;
+        mensaje += `- Leo: ${v('leo')}%0A`;
+        mensaje += `- Pagos: ${v('pagos')}%0A`;
+        mensaje += `*TOTAL DER: ${tr}*%0A%0A`;
+        
+        mensaje += `--------------------------%0A`;
+        mensaje += `*SUMA TOTALES:* ${suma}%0A`;
+        mensaje += `*DIFERENCIA:* ${resta}%0A`;
+        mensaje += `--------------------------`;
+
+        // Abrir WhatsApp
+        window.open(`https://wa.me/?text=${mensaje}`, '_blank');
     }
 
     function limpiar() {
-        if(confirm('¿Estás seguro de que quieres limpiar todos los campos?')) {
+        if(confirm('¿Limpiar todos los datos?')) {
             document.querySelectorAll('input').forEach(input => input.value = '');
             calcular();
         }
