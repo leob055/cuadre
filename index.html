@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Cuadre ZAEB</title>
+    <title>Sistema de Cuadre</title>
     <style>
         :root {
             --bg: #0f172a;
@@ -139,7 +139,6 @@
         .btn-ws { background: var(--whatsapp); }
         .btn-clear { background: var(--danger); opacity: 0.8; }
 
-        /* Estilos Calculadora */
         .calc-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -268,7 +267,6 @@
         }
     }
 
-    // Funciones Calculadora
     let disp = document.getElementById('display');
     function add(v) { if(disp.innerText === '0' || disp.innerText === 'Error') disp.innerText = v; else disp.innerText += v; }
     function cls() { disp.innerText = '0'; }
