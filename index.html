@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Cuadre Pro</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #38bdf8;
+            --secondary: #fbbf24;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --text: #f8fafc;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .column {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            border: 1px solid #334155;
+        }
+
+        .column-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+        }
+
+        .total-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .results-panel {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .final-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid;
+        }
+
+        .sum-card { border-color: var(--success); }
+        .rest-card { border-color: var(--secondary); }
+
+        .final-val {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-top: 10px;
+        }
+
+        .btn-clear {
+            width: 100%;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-clear:hover { opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Control de Caja</h1>
+
+    <div class="grid">
+        <div class="column">
+            <div class="column-title">Efectivo 💵</div>
+            <div class="input-group">
+                <label>Gabeta</label>
+                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="input-group">
+                <label>Monedas</label>
+                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="input-group">
+                <label>Fiados</label>
+                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="input-group">
+                <label>Premios</label>
+                <input type="number" class="left-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="total-box">Total Izq: <span id="totalLeft">0.00</span></div>
+        </div>
+
+        <div class="column">
+            <div class="column-title">Operaciones 📊</div>
+            <div class="input-group">
+                <label>Lotería</label>
+                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="input-group">
+                <label>Parlay</label>
+                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="input-group">
+                <label>Leo</label>
+                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="input-group">
+                <label>Pagos</label>
+                <input type="number" class="right-input" oninput="calcular()" placeholder="0.00">
+            </div>
+            <div class="total-box">Total Der: <span id="totalRight">0.00</span></div>
+        </div>
+    </div>
+
+    <div class="results-panel">
+        <div class="final-card sum-card">
+            <span style="color: var(--success)">SUMA TOTALES</span>
+            <span class="final-val" id="grandSum">0.00</span>
+        </div>
+        <div class="final-card rest-card">
+            <span style="color: var(--secondary)">DIFERENCIA (RESTA)</span>
+            <span class="final-val" id="grandDiff">0.00</span>
+        </div>
+    </div>
+
+    <button class="btn-clear" onclick="limpiar()">BORRAR TODO</button>
+</div>
+
+<script>
+    function calcular() {
+        let leftInputs = document.querySelectorAll('.left-input');
+        let rightInputs = document.querySelectorAll('.right-input');
+        
+        let sumLeft = 0;
+        leftInputs.forEach(input => {
+            sumLeft += Number(input.value) || 0;
+        });
+
+        let sumRight = 0;
+        rightInputs.forEach(input => {
+            sumRight += Number(input.value) || 0;
+        });
+
+        // Actualizar totales individuales
+        document.getElementById('totalLeft').innerText = sumLeft.toLocaleString('en-US', {minimumFractionDigits: 2});
+        document.getElementById('totalRight').innerText = sumRight.toLocaleString('en-US', {minimumFractionDigits: 2});
+
+        // Suma de ambos totales
+        document.getElementById('grandSum').innerText = (sumLeft + sumRight).toLocaleString('en-US', {minimumFractionDigits: 2});
+
+        // Resta de ambos totales
+        document.getElementById('grandDiff').innerText = (sumLeft - sumRight).toLocaleString('en-US', {minimumFractionDigits: 2});
+    }
+
+    function limpiar() {
+        if(confirm('¿Estás seguro de que quieres limpiar todos los campos?')) {
+            document.querySelectorAll('input').forEach(input => input.value = '');
+            calcular();
+        }
+    }
+</script>
+
+</body>
+</html>
