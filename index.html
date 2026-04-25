@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Cuadre Pro</title>
+    <title>Sistema de Cuadre ZAEB</title>
     <style>
         :root {
             --bg: #0f172a;
@@ -17,11 +17,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
         }
@@ -34,15 +34,15 @@
         h1 {
             text-align: center;
             color: var(--primary);
+            font-size: 1.5rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
         @media (max-width: 600px) {
@@ -51,62 +51,60 @@
 
         .column {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
             border: 1px solid #334155;
         }
 
         .column-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 15px;
             border-bottom: 2px solid var(--primary);
             padding-bottom: 5px;
+            font-weight: bold;
         }
 
-        .input-group {
-            margin-bottom: 15px;
-        }
+        .input-group { margin-bottom: 10px; }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            margin-bottom: 4px;
+            font-size: 0.85rem;
             color: #94a3b8;
         }
 
         input {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             border: 1px solid #475569;
             background: #0f172a;
             color: white;
             font-size: 1rem;
             box-sizing: border-box;
-            outline: none;
         }
 
         .total-box {
-            margin-top: 20px;
-            padding: 15px;
+            margin-top: 15px;
+            padding: 10px;
             background: rgba(56, 189, 248, 0.1);
-            border-radius: 10px;
+            border-radius: 8px;
             text-align: center;
             font-weight: bold;
+            color: var(--primary);
         }
 
         .results-panel {
-            margin-top: 30px;
+            margin-top: 20px;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 15px;
         }
 
         .final-card {
             background: var(--card-bg);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 15px;
+            border-radius: 12px;
             text-align: center;
             border: 2px solid;
         }
@@ -116,33 +114,53 @@
 
         .final-val {
             display: block;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
         .actions {
-            margin-top: 25px;
+            margin-top: 20px;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
         button {
-            width: 100%;
             padding: 15px;
             border: none;
             border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
             font-size: 1rem;
-            transition: transform 0.1s;
+            color: white;
         }
 
-        button:active { transform: scale(0.98); }
+        .btn-ws { background: var(--whatsapp); }
+        .btn-clear { background: var(--danger); opacity: 0.8; }
 
-        .btn-ws { background: var(--whatsapp); color: white; }
-        .btn-clear { background: var(--danger); color: white; opacity: 0.8; }
+        /* Estilos Calculadora */
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-calc { background: #334155; padding: 12px; font-size: 1.2rem; }
+        .btn-op { background: var(--primary); }
+        .display-calc {
+            grid-column: span 4;
+            background: #000;
+            color: var(--secondary);
+            font-family: monospace;
+            font-size: 1.8rem;
+            text-align: right;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border: 1px solid var(--secondary);
+        }
     </style>
 </head>
 <body>
@@ -153,19 +171,19 @@
     <div class="grid">
         <div class="column">
             <div class="column-title">Efectivo 💵</div>
-            <div class="input-group"><label>Gabeta</label><input type="number" id="gabeta" class="left-input" oninput="calcular()"></div>
-            <div class="input-group"><label>Monedas</label><input type="number" id="monedas" class="left-input" oninput="calcular()"></div>
-            <div class="input-group"><label>Fiados</label><input type="number" id="fiados" class="left-input" oninput="calcular()"></div>
-            <div class="input-group"><label>Premios</label><input type="number" id="premios" class="left-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Gabeta</label><input type="number" id="gabeta" oninput="calcular()"></div>
+            <div class="input-group"><label>Monedas</label><input type="number" id="monedas" oninput="calcular()"></div>
+            <div class="input-group"><label>Fiados</label><input type="number" id="fiados" oninput="calcular()"></div>
+            <div class="input-group"><label>Premios</label><input type="number" id="premios" oninput="calcular()"></div>
             <div class="total-box">Total Izq: <span id="totalLeft">0.00</span></div>
         </div>
 
         <div class="column">
             <div class="column-title">Operaciones 📊</div>
-            <div class="input-group"><label>Lotería</label><input type="number" id="loteria" class="right-input" oninput="calcular()"></div>
-            <div class="input-group"><label>Parlay</label><input type="number" id="parlay" class="right-input" oninput="calcular()"></div>
-            <div class="input-group"><label>Leo</label><input type="number" id="leo" class="right-input" oninput="calcular()"></div>
-            <div class="input-group"><label>Pagos</label><input type="number" id="pagos" class="right-input" oninput="calcular()"></div>
+            <div class="input-group"><label>Lotería</label><input type="number" id="loteria" oninput="calcular()"></div>
+            <div class="input-group"><label>Parlay</label><input type="number" id="parlay" oninput="calcular()"></div>
+            <div class="input-group"><label>Leo</label><input type="number" id="leo" oninput="calcular()"></div>
+            <div class="input-group"><label>Pagos</label><input type="number" id="pagos" oninput="calcular()"></div>
             <div class="total-box">Total Der: <span id="totalRight">0.00</span></div>
         </div>
     </div>
@@ -176,7 +194,7 @@
             <span class="final-val" id="grandSum">0.00</span>
         </div>
         <div class="final-card rest-card">
-            <span style="color: var(--secondary)">DIFERENCIA (RESTA)</span>
+            <span style="color: var(--secondary)">DIFERENCIA</span>
             <span class="final-val" id="grandDiff">0.00</span>
         </div>
     </div>
@@ -185,27 +203,49 @@
         <button class="btn-ws" onclick="enviarWhatsApp()">ENVIAR POR WHATSAPP ✅</button>
         <button class="btn-clear" onclick="limpiar()">LIMPIAR TODO</button>
     </div>
+
+    <div class="column" style="margin-top: 30px; background: #0f172a; border: 1px dashed var(--secondary);">
+        <div class="column-title" style="color: var(--secondary); border-color: var(--secondary);">Calculadora Auxiliar</div>
+        <div id="display" class="display-calc">0</div>
+        <div class="calc-grid">
+            <button class="btn-calc" onclick="add('7')">7</button>
+            <button class="btn-calc" onclick="add('8')">8</button>
+            <button class="btn-calc" onclick="add('9')">9</button>
+            <button class="btn-calc btn-op" onclick="add('/')">/</button>
+            
+            <button class="btn-calc" onclick="add('4')">4</button>
+            <button class="btn-calc" onclick="add('5')">5</button>
+            <button class="btn-calc" onclick="add('6')">6</button>
+            <button class="btn-calc btn-op" onclick="add('*')">*</button>
+            
+            <button class="btn-calc" onclick="add('1')">1</button>
+            <button class="btn-calc" onclick="add('2')">2</button>
+            <button class="btn-calc" onclick="add('3')">3</button>
+            <button class="btn-calc btn-op" onclick="add('-')">-</button>
+            
+            <button class="btn-calc" style="background: var(--danger)" onclick="cls()">C</button>
+            <button class="btn-calc" onclick="add('0')">0</button>
+            <button class="btn-calc" style="background: var(--success)" onclick="res()">=</button>
+            <button class="btn-calc btn-op" onclick="add('+')">+</button>
+        </div>
+    </div>
 </div>
 
 <script>
     function calcular() {
-        let leftInputs = document.querySelectorAll('.left-input');
-        let rightInputs = document.querySelectorAll('.right-input');
+        const idsLeft = ['gabeta', 'monedas', 'fiados', 'premios'];
+        const idsRight = ['loteria', 'parlay', 'leo', 'pagos'];
         
-        let sumLeft = 0;
-        leftInputs.forEach(input => sumLeft += Number(input.value) || 0);
+        let sumL = idsLeft.reduce((acc, id) => acc + (Number(document.getElementById(id).value) || 0), 0);
+        let sumR = idsRight.reduce((acc, id) => acc + (Number(document.getElementById(id).value) || 0), 0);
 
-        let sumRight = 0;
-        rightInputs.forEach(input => sumRight += Number(input.value) || 0);
-
-        document.getElementById('totalLeft').innerText = sumLeft.toFixed(2);
-        document.getElementById('totalRight').innerText = sumRight.toFixed(2);
-        document.getElementById('grandSum').innerText = (sumLeft + sumRight).toFixed(2);
-        document.getElementById('grandDiff').innerText = (sumLeft - sumRight).toFixed(2);
+        document.getElementById('totalLeft').innerText = sumL.toFixed(2);
+        document.getElementById('totalRight').innerText = sumR.toFixed(2);
+        document.getElementById('grandSum').innerText = (sumL + sumR).toFixed(2);
+        document.getElementById('grandDiff').innerText = (sumL - sumR).toFixed(2);
     }
 
     function enviarWhatsApp() {
-        // Obtener valores
         const v = (id) => document.getElementById(id).value || "0.00";
         const tl = document.getElementById('totalLeft').innerText;
         const tr = document.getElementById('totalRight').innerText;
@@ -213,36 +253,28 @@
         const resta = document.getElementById('grandDiff').innerText;
         const fecha = new Date().toLocaleDateString();
 
-        // Crear mensaje formateado
-        let mensaje = `*CIERRE DE CAJA - ${fecha}*%0A%0A`;
-        mensaje += `*EFECTIVO:*%0A`;
-        mensaje += `- Gabeta: ${v('gabeta')}%0A`;
-        mensaje += `- Monedas: ${v('monedas')}%0A`;
-        mensaje += `- Fiados: ${v('fiados')}%0A`;
-        mensaje += `- Premios: ${v('premios')}%0A`;
-        mensaje += `*TOTAL IZQ: ${tl}*%0A%0A`;
-        
-        mensaje += `*OPERACIONES:*%0A`;
-        mensaje += `- Lotería: ${v('loteria')}%0A`;
-        mensaje += `- Parlay: ${v('parlay')}%0A`;
-        mensaje += `- Leo: ${v('leo')}%0A`;
-        mensaje += `- Pagos: ${v('pagos')}%0A`;
-        mensaje += `*TOTAL DER: ${tr}*%0A%0A`;
-        
-        mensaje += `--------------------------%0A`;
-        mensaje += `*SUMA TOTALES:* ${suma}%0A`;
-        mensaje += `*DIFERENCIA:* ${resta}%0A`;
-        mensaje += `--------------------------`;
+        let m = `*CIERRE DE CAJA - ${fecha}*%0A%0A`;
+        m += `*EFECTIVO:*%0A- Gabeta: ${v('gabeta')}%0A- Monedas: ${v('monedas')}%0A- Fiados: ${v('fiados')}%0A- Premios: ${v('premios')}%0A*TOTAL: ${tl}*%0A%0A`;
+        m += `*OPERACIONES:*%0A- Lotería: ${v('loteria')}%0A- Parlay: ${v('parlay')}%0A- Leo: ${v('leo')}%0A- Pagos: ${v('pagos')}%0A*TOTAL: ${tr}*%0A%0A`;
+        m += `*SUMA TOTALES: ${suma}*%0A*DIFERENCIA: ${resta}*`;
 
-        // Abrir WhatsApp
-        window.open(`https://wa.me/?text=${mensaje}`, '_blank');
+        window.open(`https://wa.me/?text=${m}`, '_blank');
     }
 
     function limpiar() {
-        if(confirm('¿Limpiar todos los datos?')) {
-            document.querySelectorAll('input').forEach(input => input.value = '');
+        if(confirm('¿Borrar todo?')) {
+            document.querySelectorAll('input').forEach(i => i.value = '');
             calcular();
         }
+    }
+
+    // Funciones Calculadora
+    let disp = document.getElementById('display');
+    function add(v) { if(disp.innerText === '0' || disp.innerText === 'Error') disp.innerText = v; else disp.innerText += v; }
+    function cls() { disp.innerText = '0'; }
+    function res() { 
+        try { disp.innerText = eval(disp.innerText); } 
+        catch { disp.innerText = 'Error'; setTimeout(cls, 1000); } 
     }
 </script>
 
